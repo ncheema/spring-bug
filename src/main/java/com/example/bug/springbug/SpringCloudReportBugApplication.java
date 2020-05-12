@@ -9,6 +9,7 @@ import org.springframework.messaging.Message;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @SpringBootApplication
 public class SpringCloudReportBugApplication {
@@ -18,12 +19,14 @@ public class SpringCloudReportBugApplication {
     }
 
     @Bean
-    public Function<Message<String>, List<Message<String>>> shapes() {
+    public Function<Message<String>, List<Message<String>>> splitter() {
         return value ->
-                Arrays.asList(MessageBuilder
-                        .withPayload(value.getPayload())
-                        .setHeader("spring.cloud.stream.sendto.destination", "topic-dynamic")
-                        .build());
+                Arrays.stream(value.getPayload().split("-"))
+                        .map(message ->
+                                MessageBuilder
+                                        .withPayload(message)
+                                        .setHeader("spring.cloud.stream.sendto.destination", "topic-dynamic").build())
+                        .collect(Collectors.toList());
     }
 
 }

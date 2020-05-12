@@ -1,10 +1,10 @@
 spring.cloud.stream.defaultBinder: kafka1
 spring.cloud.stream:
-  function.definition: shapes;
+  function.definition: splitter;
   bindings:
-    shapes-out-0:
+    splitter-out-0:
       destination: topic-out
-    shapes-in-0:
+    splitter-in-0:
       destination: topic-in
   binders:
     kafka1:
