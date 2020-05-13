@@ -19,6 +19,12 @@ public class SpringCloudReportBugApplication {
     }
 
     @Bean
+    /**
+     * Splits the input string by delimiter `-`
+     * Ex:
+     * Input: square-circle-rectangle
+     * Output: [square, circle, rectangle]
+     */
     public Function<Message<String>, List<Message<String>>> splitter() {
         return value ->
                 Arrays.stream(value.getPayload().split("-"))
